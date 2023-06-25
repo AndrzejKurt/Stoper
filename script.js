@@ -15,25 +15,61 @@ let countTime
 let minutes = 0
 let seconds = 0
 
+let timesArr = []
+
 const handleStart = () => {
-	clearInterval(countTime) //zbezpiecza program przed kilkakrotnym kliknieciem play - żeby progtram nie przśpieszał
+	clearInterval(countTime) //zbezpiecza program przed kilkakrotnym kliknięciem play - żeby program nie przśpieszał
 
 	countTime = setInterval(() => {
 		if (seconds < 9) {
 			seconds++
-			console.log(seconds)
+			// console.log(seconds)
 			stopwatch.textContent = `${minutes}:0${seconds}`
 		} else if (seconds >= 9 && seconds < 59) {
 			seconds++
-			console.log(`drugi if: ${seconds}`)
+			// console.log(`drugi if: ${seconds}`)
 			stopwatch.textContent = `${minutes}:${seconds}`
 		} else {
 			minutes++
 			seconds = 0
-			console.log(`trzeci if: ${minutes}`)
+			// console.log(`trzeci if: ${minutes}`)
 			stopwatch.textContent = `${minutes}:00`
 		}
 	}, 100)
 }
 
+const handlePause = () => {
+	clearInterval(countTime)
+}
+
+const handleStop = () => {
+	time.innerHTML = `Ostatni czas: ${stopwatch.textContent}`
+
+	if (stopwatch.textContent !== `0:00`) {
+		time.style.visibility = 'visible'
+		timesArr.push(stopwatch.textContent)
+		console.log(timesArr)
+	}
+
+	clearStuff()
+}
+
+const handleReset = () => {
+	time.style.visibility = 'hidden'
+	timesArr = []
+	clearStuff()
+}
+
+const clearStuff = () => {
+	clearInterval(countTime)
+	stopwatch.textContent = `0:00`
+	timeList.textContent = ''
+	seconds = 0
+	minutes = 0
+}
+
 startBtn.addEventListener('click', handleStart)
+pauseBtn.addEventListener('click', handlePause)
+stopBtn.addEventListener('click', handleStop)
+resetBtn.addEventListener('click', handleReset)
+historyBtn.addEventListener('click', showHistory)
